@@ -1,23 +1,7 @@
-import Dependencies.*
-import org.typelevel.scalacoptions.ScalacOptions
-import sbt.Keys.libraryDependencies
-
-val scalaV = "3.3.3"
-
-val commonSettings = Seq(
-  scalaVersion := scalaV,
+lazy val root: Project = (project in file(".")).settings(
+  name                := "test-app",
+  scalaVersion := "3.3.3",
   organization := "com.test",
-  scalacOptions ++= Seq("-no-indent", "-Wunused:nowarn"),
-  tpolecatScalacOptions += ScalacOptions.sourceFuture,
-  libraryDependencies ++= coreLibraries,
-  libraryDependencies ++= testLibraries
+  scalacOptions := Seq("-Wunused:nowarn", "-Wnonunit-statement", "-Werror"),
+  libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.18" % Test,
 )
-
-lazy val root: Project = (project in file("."))
-  .settings(
-    name                := "test-app",
-    Compile / mainClass := Some("com.test.Main"),
-    commonSettings,
-    run / fork          := true
-  )
-  .enablePlugins(JavaAppPackaging)
